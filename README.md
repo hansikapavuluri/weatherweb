@@ -10,7 +10,6 @@ A modern, fully-responsive weather website built with Django that displays real-
 ## ✨ Features
 
 - **Real-time Weather Data** - Fetches current weather from OpenWeatherMap API
-- **Dynamic Animated Icons** - Weather icons change based on conditions (rain animations when it's raining!)
 - **Dark/Light Theme Toggle** - Seamless theme switching with CSS variables and localStorage
 - **Glassmorphism UI** - Modern frosted glass design with smooth transitions
 - **Fully Responsive** - Perfect experience on mobile, tablet, and desktop
