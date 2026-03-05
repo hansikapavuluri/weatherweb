@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherWeb | Modern Weather Forecast</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+    </button>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="logo">Weather<span>Web</span></h1>
+            <p class="tagline">Real-time weather updates</p>
+        </header>
+
+        <!-- Search Form -->
+        <div class="search-section">
+            <form method="POST" action="{% url 'home' %}" class="search-form" id="weatherForm">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="city" placeholder="Enter city name..." value="{{ city }}" class="city-input" required>
+                    <button type="submit" class="search-btn">
+                        <span class="btn-text">Search</span>
+                        <span class="btn-icon">🔍</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+
+        <!-- Weather Display Section -->
+        <div class="weather-container" id="weatherContainer">
+            {% if city %}
+            <!-- City Name -->
+            <div class="city-section">
+                <h2 class="city-name">
+                    <span class="location-icon">📍</span>
+                    {{ city }}
+                </h2>
+            </div>
+
+            <!-- Main Weather Info -->
+            <div class="weather-main">
+                <div class="temperature-section">
+                    <div class="weather-icon-container">
+                        {% if 'clear' in description.lower or 'sun' in description.lower %}
+                        <div class="weather-icon sunny">
+                            <div class="sun"></div>
+                            <div class="rays"></div>
+                        </div>
+                        {% elif 'rain' in description.lower or 'drizzle' in description.lower %}
+                        <div class="weather-icon rainy">
+                            <div class="cloud"></div>
+                            <div class="rain">
+                                <span class="drop"></span>
+                                <span class="drop"></span>
+                                <span class="drop"></span>
+                                <span class="drop"></span>
+                            </div>
+                        </div>
+                        {% elif 'cloud' in description.lower %}
+                        <div class="weather-icon cloudy">
+                            <div class="cloud big"></div>
+                            <div class="cloud small"></div>
+                        </div>
+                        {% else %}
+                        <div class="weather-icon default">
+                            <div class="circle"></div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="temperature-wrapper">
+                        <span class="temperature">{{ weather.temperature }}</span>
+                        <span class="unit">°C</span>
+                    </div>
+                    <p class="weather-description">{{ weather.description }}</p>
+                </div>
+            </div>
+
+            <!-- Weather Details Grid -->
+            <div class="weather-details">
+                <div class="detail-card">
+                    <span class="detail-icon">💧</span>
+                    <span class="detail-label">Humidity</span>
+                    <span class="detail-value">{{ weather.humidity }}%</span>
+                </div>
+                
+                <div class="detail-card">
+                    <span class="detail-icon">🌬️</span>
+                    <span class="detail-label">Wind Speed</span>
+                    <span class="detail-value">{{ wind_speed }} km/h</span>
+                </div>
+                
+                <div class="detail-card">
+                    <span class="detail-icon">⚖️</span>
+                    <span class="detail-label">Pressure</span>
+                    <span class="detail-value">1015 hPa</span>
+                </div>
+                
+                <div class="detail-card">
+                    <span class="detail-icon">🌡️</span>
+                    <span class="detail-label">Feels Like</span>
+                    <span class="detail-value">{{ weather.temperature }}°C</span>
+                </div>
+            </div>
+            {% else %}
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <div class="welcome-icon">🌤️</div>
+                {% if messages %}
+                    {% for msg in messages %}
+                        <h3>{{msg}}</h3>
+                    {% endfor%}
+                {% else %}
+                <h3>Welcome to WeatherWeb</h3>
+                <p>Enter a city name to get current weather conditions</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 WeatherWeb. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
